@@ -1,6 +1,6 @@
 package com.dockbank.bank.domain.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,8 +14,8 @@ import lombok.Data;
 public class Pessoa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idPessoa;
     private String nome;
     private String cpf;
-    private LocalDateTime dataNascimento;
+    private LocalDate dataNascimento;
 }
