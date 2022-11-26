@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dockbank.bank.domain.exception.ContaNaoEncontradaException;
+import com.dockbank.bank.domain.exception.SaldoInsuficienteException;
 import com.dockbank.bank.domain.model.Conta;
 import com.dockbank.bank.domain.repository.ContaRepository;
 
@@ -40,6 +41,15 @@ public class ContaService {
         conta.setSaldo(conta.getSaldo() + valor);
         salvar(conta);
         return conta;
+    }
+
+    public Conta sacar(Long idConta, double valor) {
+        var conta = buscar(idConta);
+        if (conta.getSaldo() >= valor)
+            conta.setSaldo(conta.getSaldo() - valor);
+        else
+            throw new SaldoInsuficienteException("Sua conta não possui saldo suficiente");
+        return contaRepository.save(conta);
     }
 
 }

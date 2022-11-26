@@ -16,6 +16,7 @@ import com.dockbank.bank.commom.modelmapper.ContaMapper;
 import com.dockbank.bank.domain.dto.ContaDTO;
 import com.dockbank.bank.domain.dto.input.ContaInput;
 import com.dockbank.bank.domain.dto.input.DepositoInput;
+import com.dockbank.bank.domain.dto.input.SaqueInput;
 import com.dockbank.bank.domain.service.ContaService;
 
 import lombok.AllArgsConstructor;
@@ -49,8 +50,16 @@ public class ContaController {
         return contaDto;
     }
 
+    @PutMapping("/{idConta}/saque")
+    public ContaDTO saque(@PathVariable Long idConta, @RequestBody @Valid SaqueInput saque) {
+        var valor = saque.getValor();
+        var conta = contaService.sacar(idConta, valor);
+        var contaDto = contaMapper.toDTO(conta);
+        return contaDto;
+    }
+
     @PutMapping("/{idConta}/deposito")
-    public ContaDTO bloquear(@PathVariable Long idConta, @RequestBody @Valid DepositoInput deposito) {
+    public ContaDTO deposito(@PathVariable Long idConta, @RequestBody @Valid DepositoInput deposito) {
         var valor = deposito.getValor();
         var conta = contaService.depositar(idConta, valor);
         var contaDto = contaMapper.toDTO(conta);
