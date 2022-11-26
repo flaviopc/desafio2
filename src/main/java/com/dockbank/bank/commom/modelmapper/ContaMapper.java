@@ -1,4 +1,4 @@
-package com.dockbank.bank.domain.dto.modelmapper;
+package com.dockbank.bank.commom.modelmapper;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -16,6 +16,7 @@ public class ContaMapper {
 
     public Conta toEntity(ContaInput contaInput) {
         return modelMapper.map(contaInput, Conta.class);
+
     }
 
     public ContaDTO toDTO(Conta conta) {

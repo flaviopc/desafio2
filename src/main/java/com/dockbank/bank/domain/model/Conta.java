@@ -17,6 +17,9 @@ import lombok.Data;
 @Data
 @Entity
 public class Conta {
+
+    private static final String ATIVA = "ATIVA";
+    private static final String BLOQUEADA = "BLOQUEADA";
     public static final int CONTA_ATIVA = 1;
     public static final int CONTA_INATIVA = 0;
 
@@ -31,16 +34,19 @@ public class Conta {
     private double limiteSaqueDiario;
     private int flagAtivo;
     private int tipoConta;
+    private String status;
 
     @JsonProperty(access = Access.READ_ONLY)
     private LocalDateTime dataCriacao;
 
     public void bloquearConta() {
         this.flagAtivo = CONTA_INATIVA;
+        status = BLOQUEADA;
     }
 
     public void ativarConta() {
         this.flagAtivo = CONTA_ATIVA;
+        status = ATIVA;
     }
 
     public boolean estaAtiva() {

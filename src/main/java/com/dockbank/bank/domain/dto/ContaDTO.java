@@ -9,4 +9,5 @@ public class ContaDTO {
     private Long id;
     private PessoaDTO pessoa;
     private double saldo;
+    private String status;
 }

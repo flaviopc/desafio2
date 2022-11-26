@@ -37,10 +37,8 @@ public class ContaService {
 
     public Conta depositar(Long idConta, double valor) {
         var conta = buscar(idConta);
-        if (valor > 0 && conta.estaAtiva())
-            conta.setSaldo(conta.getSaldo() + valor);
-        else
-            throw new ContaNaoEncontradaException(idConta);
+        conta.setSaldo(conta.getSaldo() + valor);
+        salvar(conta);
         return conta;
     }
 

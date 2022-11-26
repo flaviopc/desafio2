@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dockbank.bank.commom.modelmapper.ContaMapper;
 import com.dockbank.bank.domain.dto.ContaDTO;
 import com.dockbank.bank.domain.dto.input.ContaInput;
-import com.dockbank.bank.domain.dto.modelmapper.ContaMapper;
+import com.dockbank.bank.domain.dto.input.DepositoInput;
 import com.dockbank.bank.domain.service.ContaService;
 
 import lombok.AllArgsConstructor;
@@ -27,7 +28,7 @@ public class ContaController {
     private ContaMapper contaMapper;
 
     @GetMapping("/{idConta}/saldo")
-    public ContaDTO buscar(@PathVariable Long idConta) {
+    public ContaDTO saldo(@PathVariable Long idConta) {
         var conta = contaService.buscar(idConta);
         var contaDto = contaMapper.toDTO(conta);
         return contaDto;
@@ -49,7 +50,8 @@ public class ContaController {
     }
 
     @PutMapping("/{idConta}/deposito")
-    public ContaDTO bloquear(@PathVariable Long idConta, @RequestBody Double valor) {
+    public ContaDTO bloquear(@PathVariable Long idConta, @RequestBody @Valid DepositoInput deposito) {
+        var valor = deposito.getValor();
         var conta = contaService.depositar(idConta, valor);
         var contaDto = contaMapper.toDTO(conta);
         return contaDto;
