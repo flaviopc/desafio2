@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import lombok.Data;
 
 @Data
@@ -20,6 +23,7 @@ public class Conta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idConta;
+
     @OneToOne
     @JoinColumn(name = "idPessoa", referencedColumnName = "idPessoa")
     private Pessoa pessoa;
@@ -27,6 +31,8 @@ public class Conta {
     private double limiteSaqueDiario;
     private int flagAtivo;
     private int tipoConta;
+
+    @JsonProperty(access = Access.READ_ONLY)
     private LocalDateTime dataCriacao;
 
     public void bloquearConta() {
