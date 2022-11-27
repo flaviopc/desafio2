@@ -2,7 +2,6 @@ package com.dockbank.bank.domain.service;
 
 import java.time.LocalDateTime;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dockbank.bank.domain.exception.ContaNaoEncontradaException;
@@ -10,15 +9,20 @@ import com.dockbank.bank.domain.exception.SaldoInsuficienteException;
 import com.dockbank.bank.domain.model.Conta;
 import com.dockbank.bank.domain.repository.ContaRepository;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class ContaService {
-    @Autowired
+    private TransacaoService transacaoService;
     private ContaRepository contaRepository;
 
     public Conta salvar(Conta conta) {
         conta.ativarConta();
         conta.setDataCriacao(LocalDateTime.now());
-        return contaRepository.save(conta);
+        var contaSalva = contaRepository.save(conta);
+        transacaoService.salvar(contaSalva, conta.getSaldo());
+        return contaSalva;
     }
 
     public Conta buscar(Long idConta) {
@@ -39,8 +43,9 @@ public class ContaService {
     public Conta depositar(Long idConta, double valor) {
         var conta = buscar(idConta);
         conta.setSaldo(conta.getSaldo() + valor);
-        salvar(conta);
-        return conta;
+        var contaSalva = contaRepository.save(conta);
+        transacaoService.salvar(contaSalva, valor);
+        return contaSalva;
     }
 
     public Conta sacar(Long idConta, double valor) {
@@ -49,7 +54,10 @@ public class ContaService {
             conta.setSaldo(conta.getSaldo() - valor);
         else
             throw new SaldoInsuficienteException("Sua conta não possui saldo suficiente");
-        return contaRepository.save(conta);
+
+        var contaSalva = contaRepository.save(conta);
+        transacaoService.salvar(contaSalva, valor);
+        return contaSalva;
     }
 
 }
