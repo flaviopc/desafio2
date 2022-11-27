@@ -8,6 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DepositoInput {
-    @Min(value = 1)
+    @Min(value = 1, message = "Só são aceitos depositos a partir de R$ 1")
     private double valor;
 }

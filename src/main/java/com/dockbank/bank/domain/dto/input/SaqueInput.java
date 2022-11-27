@@ -8,6 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SaqueInput {
-    @Min(value = 1)
+    @Min(value = 1, message = "Só é permitido o saque a partir de R$ 1")
     private double valor;
 }

@@ -53,7 +53,7 @@ public class ContaService {
         if (conta.getSaldo() >= valor)
             conta.setSaldo(conta.getSaldo() - valor);
         else
-            throw new SaldoInsuficienteException("Sua conta não possui saldo suficiente");
+            throw new SaldoInsuficienteException();
 
         var contaSalva = contaRepository.save(conta);
         transacaoService.salvar(contaSalva, valor);
