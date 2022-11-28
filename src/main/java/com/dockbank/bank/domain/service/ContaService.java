@@ -56,7 +56,7 @@ public class ContaService {
             throw new SaldoInsuficienteException();
 
         var contaSalva = contaRepository.save(conta);
-        transacaoService.salvar(contaSalva, valor);
+        transacaoService.salvar(contaSalva, -valor);
         return contaSalva;
     }
 

@@ -1,5 +1,8 @@
 package com.dockbank.bank.api.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +31,9 @@ import com.dockbank.bank.domain.service.ContaService;
 import com.dockbank.bank.domain.service.TransacaoService;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @RequestMapping("/contas")
 @RestController
 @AllArgsConstructor
@@ -47,6 +53,26 @@ public class ContaController {
     public TransacoesContaDTO extrato(@PathVariable Long idConta) {
         var conta = contaService.buscar(idConta);
         List<Transacao> transacoes = transacaoService.mostrarTodasDeUmaConta(conta.getIdConta());
+        List<TransacaoDTO> transacoesDTO = transacaoMapper.toListDTO(transacoes);
+        TransacoesContaDTO transacoesContaDTO = new TransacoesContaDTO();
+        transacoesContaDTO.setConta(contaMapper.toDTO(conta));
+        transacoesContaDTO.setTransacoes(transacoesDTO);
+        return transacoesContaDTO;
+    }
+
+    @GetMapping("/{idConta}/extrato-por-periodo")
+    public TransacoesContaDTO extratoPorPeriodo(@PathVariable Long idConta,
+            @RequestParam String dataInicial,
+            @RequestParam String dataFinal) {
+
+        var conta = contaService.buscar(idConta);
+
+        List<Transacao> transacoes = transacaoService.mostrarPorPeriodo(
+                LocalDateTime.of(LocalDate.parse(dataInicial), LocalTime.of(0, 0, 0)),
+                LocalDateTime.of(LocalDate.parse(dataFinal), LocalTime.of(23, 59, 59)));
+
+        transacoes.stream().forEach(s -> log.info(s.toString()));
+
         List<TransacaoDTO> transacoesDTO = transacaoMapper.toListDTO(transacoes);
         TransacoesContaDTO transacoesContaDTO = new TransacoesContaDTO();
         transacoesContaDTO.setConta(contaMapper.toDTO(conta));

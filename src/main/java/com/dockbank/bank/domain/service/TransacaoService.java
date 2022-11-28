@@ -32,4 +32,8 @@ public class TransacaoService {
         return repository.findAllByContaIdConta(idConta);
     }
 
+    public List<Transacao> mostrarPorPeriodo(LocalDateTime dataInicial, LocalDateTime dataFinal) {
+        return repository.findAllByDataTransacaoBetween(dataInicial, dataFinal);
+    }
+
 }
