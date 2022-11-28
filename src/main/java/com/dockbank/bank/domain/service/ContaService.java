@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.dockbank.bank.domain.exception.ContaNaoEncontradaException;
 import com.dockbank.bank.domain.exception.SaldoInsuficienteException;
 import com.dockbank.bank.domain.model.Conta;
+import com.dockbank.bank.domain.model.TipoTransacao;
 import com.dockbank.bank.domain.repository.ContaRepository;
 
 import lombok.AllArgsConstructor;
@@ -21,7 +22,7 @@ public class ContaService {
         conta.ativarConta();
         conta.setDataCriacao(LocalDateTime.now());
         var contaSalva = contaRepository.save(conta);
-        transacaoService.salvar(contaSalva, conta.getSaldo());
+        transacaoService.salvar(contaSalva, conta.getSaldo(), TipoTransacao.DEPOSITO.name());
         return contaSalva;
     }
 
@@ -44,7 +45,7 @@ public class ContaService {
         var conta = buscar(idConta);
         conta.setSaldo(conta.getSaldo() + valor);
         var contaSalva = contaRepository.save(conta);
-        transacaoService.salvar(contaSalva, valor);
+        transacaoService.salvar(contaSalva, valor, TipoTransacao.DEPOSITO.name());
         return contaSalva;
     }
 
@@ -56,7 +57,7 @@ public class ContaService {
             throw new SaldoInsuficienteException();
 
         var contaSalva = contaRepository.save(conta);
-        transacaoService.salvar(contaSalva, -valor);
+        transacaoService.salvar(contaSalva, valor, TipoTransacao.SAQUE.name());
         return contaSalva;
     }
 

@@ -16,10 +16,11 @@ import lombok.AllArgsConstructor;
 public class TransacaoService {
     private TransacaoRepository repository;
 
-    public void salvar(Conta conta, double valor) {
+    public void salvar(Conta conta, double valor, String tipoTransacao) {
         Transacao transacao = new Transacao();
         transacao.setConta(conta);
         transacao.setValor(valor);
+        transacao.setTipoTransacao(tipoTransacao);
         transacao.setDataTransacao(LocalDateTime.now());
         repository.save(transacao);
     }

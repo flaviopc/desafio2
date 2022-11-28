@@ -25,6 +25,8 @@ public class Transacao {
 
     private double valor;
 
+    private String tipoTransacao;
+
     @JsonProperty(access = Access.READ_ONLY)
     private LocalDateTime dataTransacao;
 }

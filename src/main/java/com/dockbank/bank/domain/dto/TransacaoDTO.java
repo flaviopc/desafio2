@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public class TransacaoDTO {
     private Long idTransacao;
+    private String tipoTransacao;
     private double valor;
     private LocalDateTime dataTransacao;
 }
