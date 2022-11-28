@@ -22,6 +22,6 @@ public class MessageException {
     @Builder
     public static class Problema {
         private String campo;
-        private String userMessage;
+        private String mensagem;
     }
 }
