@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,6 +22,7 @@ public class Transacao {
     private Long idTransacao;
 
     @ManyToOne
+    @JoinColumn(name = "idConta", referencedColumnName = "idConta")
     private Conta conta;
 
     private double valor;
